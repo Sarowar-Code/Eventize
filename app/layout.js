@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import { dbConnect } from "@/services/mongo";
 import localFont from "next/font/local";
 import "./globals.css";
 
@@ -20,7 +21,8 @@ export const metadata = {
         "Streamline event planning with smart tools and real-time tracking.",
 };
 
-export default function RootLayout({ children }) {
+export default async function RootLayout({ children }) {
+    await dbConnect();
     return (
         <html lang="en">
             <body
