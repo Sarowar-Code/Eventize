@@ -1,6 +1,12 @@
 "use server";
 
-import { createUser, findUserByCredentials } from "@/db/queries";
+import {
+    createUser,
+    findUserByCredentials,
+    updateGoing,
+    updateInterest,
+} from "@/db/queries";
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 
 async function registerUser(formData) {
@@ -24,4 +30,25 @@ async function performLogin(formData) {
     }
 }
 
-export { performLogin, registerUser };
+async function addInterestedEvent(eventId, authId) {
+    try {
+        await updateInterest(eventId, authId);
+    } catch (error) {
+        throw error;
+    }
+
+    revalidatePath("/");
+}
+
+async function addGoingEvent(eventId, user) {
+    try {
+        await updateGoing(eventId, user?.id);
+    } catch (error) {
+        throw error;
+    }
+
+    revalidatePath("/");
+    redirect("/");
+}
+
+export { addGoingEvent, addInterestedEvent, performLogin, registerUser };
