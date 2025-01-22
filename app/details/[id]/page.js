@@ -14,6 +14,7 @@ export async function generateMetadata({ params: { id } }) {
         },
     };
 }
+
 const EventDetailsPage = async ({ params: { id } }) => {
     const eventInfo = await getEventById(id);
     console.log(eventInfo);
